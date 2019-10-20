@@ -26,7 +26,7 @@ jobs:
       - name: Build yaml2json-builder
         run: docker build -f build/Dockerfile -t yaml2json-builder .
       - name: nimble build
-        run: docker run -v ${GITHUB_WORKSPACE}:/app yaml2json-builder nimble build -d:release -os:linux -cpu:amd64 -cpu:arm -y
+        run: docker run -v ${GITHUB_WORKSPACE}:${GITHUB_WORKSPACE} -w ${GITHUB_WORKSPACE} yaml2json-builder nimble build -d:release -os:linux -cpu:amd64 -cpu:arm -y
       - name: Upload artifact # https://help.github.com/en/articles/persisting-workflow-data-using-artifacts
         uses: actions/upload-artifact@v1
         with:
