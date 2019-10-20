@@ -12,7 +12,7 @@ jobs:
     - name: Install nim
       run: brew install nim
     - name: nimble build
-      run: nimble build -d:release -y
+      run: nimble build -d:release --os:MacOSX --cpu:amd64 -y
     - name: Upload artifact # https://help.github.com/en/articles/persisting-workflow-data-using-artifacts
       uses: actions/upload-artifact@v1
       with:
