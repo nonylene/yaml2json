@@ -63,23 +63,38 @@ jobs:
           release_name: Release ${{ github.ref }}
           prerelease: true
 
-  upload-release:
-    needs: [create-release]
-    strategy:
-      matrix:
-        binary: [yaml2json-Darwin-x86_64, yaml2json-Linux-x86_64, yaml2json-Linux-armv7l]
-    name: Upload Release
-    runs-on: ubuntu-latest
-    steps:
       - uses: actions/download-artifact@v1
         with:
-          name: ${{ matrix.binary }}
+          name: yaml2json-Darwin-x86_64
       - name: Upload Release Asset
-        id: upload-release-asset 
         uses: actions/upload-release-asset@v1.0.1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ job.create-release.steps.create-release.outputs.upload_url }}
-          asset_path: ./${{ matrix.binary }}
-          asset_name: ${{ matrix.binary }}
+          upload_url: ${{ steps.create-release.outputs.upload_url }}
+          asset_path: ./yaml2json-Darwin-x86_64
+          asset_name: yaml2json-Darwin-x86_64
+
+      - uses: actions/download-artifact@v1
+        with:
+          name: yaml2json-Linux-x86_64
+      - name: Upload Release Asset
+        uses: actions/upload-release-asset@v1.0.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create-release.outputs.upload_url }}
+          asset_path: ./yaml2json-Linux-x86_64
+          asset_name: yaml2json-Linux-x86_64
+
+      - uses: actions/download-artifact@v1
+        with:
+          name: yaml2json-Linux-armv7l
+      - name: Upload Release Asset
+        uses: actions/upload-release-asset@v1.0.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create-release.outputs.upload_url }}
+          asset_path: ./yaml2json-Linux-armv7l
+          asset_name: yaml2json-Linux-armv7l
