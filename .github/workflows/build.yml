@@ -49,6 +49,7 @@ jobs:
           path: yaml2json
 
   create-release:
+    if: startsWith(github.ref, 'tag/v*')
     needs: [build-macos-amd64, build-linux-amd64, build-linux-arm]
     name: Create Release
     runs-on: ubuntu-latest
