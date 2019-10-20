@@ -19,15 +19,30 @@ jobs:
         name: yaml2json-Darwin-x86_64
         path: yaml2json
 
-  build-linux:
+  build-linux-arm:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
       - name: Build yaml2json-builder
         run: docker build -f build/Dockerfile -t yaml2json-builder .
       - name: nimble build
-        run: docker run -v ${GITHUB_WORKSPACE}:${GITHUB_WORKSPACE} -w ${GITHUB_WORKSPACE} yaml2json-builder nimble build -d:release --os:linux --cpu:amd64 -y
-      - name: Upload artifact # https://help.github.com/en/articles/persisting-workflow-data-using-artifacts
+        run: docker run -v ${GITHUB_WORKSPACE}:${GITHUB_WORKSPACE} -w ${GITHUB_WORKSPACE} yaml2json-builder nimble build -d:release --os:linux --cpu:arm -y
+      - name: Upload artifact
+        uses: actions/upload-artifact@v1
+        with:
+          name: yaml2json-Linux-armv7l
+          path: yaml2json
+
+  build-linux-amd64:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: nimble build
+        uses: nimlang/nim
+        with:
+          entrypoint: /bin/nimble
+          args: build -d:release --os:linux --cpu:amd64 -y
+      - name: Upload artifact
         uses: actions/upload-artifact@v1
         with:
           name: yaml2json-Linux-x86_64
