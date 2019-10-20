@@ -1,0 +1,110 @@
+# https://help.github.com/en/articles/workflow-syntax-for-github-actions
+
+name: Build
+
+on: [push]
+
+jobs:
+  build-macos-amd64:
+    runs-on: macOS-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Install nim
+      run: brew install nim
+    - name: nimble build
+      run: nimble build -d:release --os:MacOSX --cpu:amd64 -y
+    - name: Upload artifact # https://help.github.com/en/articles/persisting-workflow-data-using-artifacts
+      uses: actions/upload-artifact@v1
+      with:
+        name: yaml2json-Darwin-x86_64
+        path: yaml2json
+
+  build-linux-amd64:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: nimble build
+        uses: docker://nimlang/nim
+        with:
+          entrypoint: /bin/nimble
+          args: build -d:release --os:linux --cpu:amd64 -y
+      - name: Upload artifact
+        uses: actions/upload-artifact@v1
+        with:
+          name: yaml2json-Linux-x86_64
+          path: yaml2json
+
+  build-linux-arm:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Build yaml2json-builder
+        run: docker build -f build/Dockerfile -t yaml2json-builder .
+      - name: nimble build
+        run: docker run -v ${GITHUB_WORKSPACE}:${GITHUB_WORKSPACE} -w ${GITHUB_WORKSPACE} yaml2json-builder nimble build -d:release --os:linux --cpu:arm -y
+      - name: Upload artifact
+        uses: actions/upload-artifact@v1
+        with:
+          name: yaml2json-Linux-armv7l
+          path: yaml2json
+
+  create-release:
+    if: startsWith(github.ref, 'tag/v*')
+    needs: [build-macos-amd64, build-linux-amd64, build-linux-arm]
+    name: Create Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create Release
+        id: create-release
+        uses: actions/create-release@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          prerelease: true
+
+      - uses: actions/download-artifact@v1
+        with:
+          name: yaml2json-Darwin-x86_64
+      - name: Archive asset
+        run: zip yaml2json-Darwin-x86_64 -r yaml2json-Darwin-x86_64
+      - name: Upload Release Asset
+        uses: actions/upload-release-asset@v1.0.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create-release.outputs.upload_url }}
+          asset_path: ./yaml2json-Darwin-x86_64.zip
+          asset_name: yaml2json-Darwin-x86_64.zip
+          asset_content_type: application/zip
+
+      - uses: actions/download-artifact@v1
+        with:
+          name: yaml2json-Linux-x86_64
+      - name: Archive asset
+        run: zip yaml2json-Linux-x86_64 -r yaml2json-Linux-x86_64
+      - name: Upload Release Asset
+        uses: actions/upload-release-asset@v1.0.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create-release.outputs.upload_url }}
+          asset_path: ./yaml2json-Linux-x86_64.zip
+          asset_name: yaml2json-Linux-x86_64.zip
+          asset_content_type: application/zip
+
+      - uses: actions/download-artifact@v1
+        with:
+          name: yaml2json-Linux-armv7l
+      - name: Archive asset
+        run: zip yaml2json-Linux-armv7l -r yaml2json-Linux-armv7l
+      - name: Upload Release Asset
+        uses: actions/upload-release-asset@v1.0.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create-release.outputs.upload_url }}
+          asset_path: ./yaml2json-Linux-armv7l.zip
+          asset_name: yaml2json-Linux-armv7l.zip
+          asset_content_type: application/zip
