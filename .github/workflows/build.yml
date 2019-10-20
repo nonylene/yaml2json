@@ -49,6 +49,7 @@ jobs:
           path: yaml2json
 
   release:
+    needs: [build-macos-amd64, build-linux-amd64, build-linux-arm]
     name: Create Release
     runs-on: ubuntu-latest
     steps:
