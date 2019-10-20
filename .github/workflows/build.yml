@@ -80,6 +80,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ jobs.create-release.steps.create-release.outputs.upload_url }}
+          upload_url: ${{ job.create-release.steps.create-release.outputs.upload_url }}
           asset_path: ./${{ matrix.binary }}
           asset_name: ${{ matrix.binary }}
