@@ -47,3 +47,25 @@ jobs:
         with:
           name: yaml2json-Linux-armv7l
           path: yaml2json
+
+  release:
+    name: Create Release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v1
+        with:
+          name: yaml2json-Darwin-x86_64
+      - uses: actions/download-artifact@v1
+        with:
+          name: yaml2json-Linux-x86_64
+      - uses: actions/download-artifact@v1
+        with:
+          name: yaml2json-Linux-armv7l
+      - name: Create Release
+        uses: actions/create-release@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          prerelease: true
