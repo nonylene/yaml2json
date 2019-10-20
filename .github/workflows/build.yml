@@ -38,7 +38,7 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: nimble build
-        uses: nimlang/nim
+        uses: docker://nimlang/nim
         with:
           entrypoint: /bin/nimble
           args: build -d:release --os:linux --cpu:amd64 -y
