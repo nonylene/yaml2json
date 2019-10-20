@@ -16,5 +16,5 @@ jobs:
     - name: Upload artifact # https://help.github.com/en/articles/persisting-workflow-data-using-artifacts
       uses: actions/upload-artifact@v1
       with:
-        name: yaml2json-macOS-x86
+        name: yaml2json-Darwin-x86_64
         path: yaml2json
