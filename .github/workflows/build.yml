@@ -1,0 +1,22 @@
+# https://help.github.com/en/articles/workflow-syntax-for-github-actions
+
+name: Build
+
+on: [push]
+
+jobs:
+  build-mac:
+
+    runs-on: macos-latest
+    
+    steps:
+    - uses: actions/checkout@v1
+    - name: Install nim
+      run: brew install nim
+    - name: nimble build
+      run: nimble build
+    - name: Upload artifact # https://help.github.com/en/articles/persisting-workflow-data-using-artifacts
+        uses: actions/upload-artifact@v1
+        with:
+          name: yaml2json-macOS-x86
+          path: yaml2json
