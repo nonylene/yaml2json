@@ -66,38 +66,44 @@ jobs:
       - uses: actions/download-artifact@v1
         with:
           name: yaml2json-Darwin-x86_64
+      - name: Archive asset
+        run: zip yaml2json-Darwin-x86_64 -r yaml2json-Darwin-x86_64
       - name: Upload Release Asset
         uses: actions/upload-release-asset@v1.0.1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create-release.outputs.upload_url }}
-          asset_path: ./yaml2json-Darwin-x86_64
-          asset_name: yaml2json-Darwin-x86_64
+          asset_path: ./yaml2json-Darwin-x86_64.zip
+          asset_name: yaml2json-Darwin-x86_64.zip
           asset_content_type: application/zip
 
       - uses: actions/download-artifact@v1
         with:
           name: yaml2json-Linux-x86_64
+      - name: Archive asset
+        run: zip yaml2json-Linux-x86_64 -r yaml2json-Linux-x86_64
       - name: Upload Release Asset
         uses: actions/upload-release-asset@v1.0.1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create-release.outputs.upload_url }}
-          asset_path: ./yaml2json-Linux-x86_64
-          asset_name: yaml2json-Linux-x86_64
+          asset_path: ./yaml2json-Linux-x86_64.zip
+          asset_name: yaml2json-Linux-x86_64.zip
           asset_content_type: application/zip
 
       - uses: actions/download-artifact@v1
         with:
           name: yaml2json-Linux-armv7l
+      - name: Archive asset
+        run: zip yaml2json-Linux-armv7l -r yaml2json-Linux-armv7l
       - name: Upload Release Asset
         uses: actions/upload-release-asset@v1.0.1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create-release.outputs.upload_url }}
-          asset_path: ./yaml2json-Linux-armv7l
-          asset_name: yaml2json-Linux-armv7l
+          asset_path: ./yaml2json-Linux-armv7l.zip
+          asset_name: yaml2json-Linux-armv7l.zip
           asset_content_type: application/zip
