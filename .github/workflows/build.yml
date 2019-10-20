@@ -20,7 +20,7 @@ jobs:
         path: yaml2json
 
   build-linux:
-    runs-on: macOS-latest
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
       - name: Build yaml2json-builder
