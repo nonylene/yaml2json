@@ -74,6 +74,7 @@ jobs:
           upload_url: ${{ steps.create-release.outputs.upload_url }}
           asset_path: ./yaml2json-Darwin-x86_64
           asset_name: yaml2json-Darwin-x86_64
+          asset_content_type: application/zip
 
       - uses: actions/download-artifact@v1
         with:
@@ -86,6 +87,7 @@ jobs:
           upload_url: ${{ steps.create-release.outputs.upload_url }}
           asset_path: ./yaml2json-Linux-x86_64
           asset_name: yaml2json-Linux-x86_64
+          asset_content_type: application/zip
 
       - uses: actions/download-artifact@v1
         with:
@@ -98,3 +100,4 @@ jobs:
           upload_url: ${{ steps.create-release.outputs.upload_url }}
           asset_path: ./yaml2json-Linux-armv7l
           asset_name: yaml2json-Linux-armv7l
+          asset_content_type: application/zip
