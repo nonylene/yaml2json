@@ -16,7 +16,7 @@ jobs:
     - name: Create archive directory
       run: |
         mkdir out
-        cp yaml2json README.md NOTICE out
+        cp yaml2json README.md NOTICE out/
     - name: Upload artifact # https://help.github.com/en/articles/persisting-workflow-data-using-artifacts
       uses: actions/upload-artifact@v1
       with:
@@ -62,7 +62,7 @@ jobs:
           path: out
 
   create-release:
-   # if: startsWith(github.ref, 'refs/tags/v')
+    if: startsWith(github.ref, 'refs/tags/v')
     needs: [build-macos-amd64, build-linux-amd64, build-linux-arm]
     name: Create Release
     runs-on: ubuntu-latest
