@@ -15,13 +15,13 @@ jobs:
       run: nimble build -d:release --os:MacOSX --cpu:amd64 -y
     - name: Create archive directory
       run: |
-        mkdir build/yaml2json -p
-        cp yaml2json README.md NOTICE build/yaml2json/
+        mkdir out
+        cp yaml2json README.md NOTICE out
     - name: Upload artifact # https://help.github.com/en/articles/persisting-workflow-data-using-artifacts
       uses: actions/upload-artifact@v1
       with:
         name: yaml2json-Darwin-x86_64
-        path: build/yaml2json
+        path: out
 
   build-linux-amd64:
     runs-on: ubuntu-latest
@@ -34,13 +34,13 @@ jobs:
           args: build -d:release --os:linux --cpu:amd64 -y
       - name: Create archive directory
         run: |
-          mkdir yaml2json
-          cp yaml2json README.md NOTICE yaml2json/
+          mkdir out
+          cp yaml2json README.md NOTICE out/
       - name: Upload artifact
         uses: actions/upload-artifact@v1
         with:
           name: yaml2json-Linux-x86_64
-          path: yaml2json
+          path: out
 
   build-linux-arm:
     runs-on: ubuntu-latest
@@ -53,13 +53,13 @@ jobs:
           args: build -d:release --os:linux --cpu:arm -y
       - name: Create archive directory
         run: |
-          mkdir yaml2json
-          cp yaml2json README.md NOTICE yaml2json/
+          mkdir out
+          cp yaml2json README.md NOTICE out/
       - name: Upload artifact
         uses: actions/upload-artifact@v1
         with:
           name: yaml2json-Linux-armv7l
-          path: yaml2json
+          path: out
 
   create-release:
    # if: startsWith(github.ref, 'refs/tags/v')
@@ -79,6 +79,8 @@ jobs:
       - uses: actions/download-artifact@v1
         with:
           name: yaml2json-Darwin-x86_64
+      - name: Archive asset
+        run: zip yaml2json-Darwin-x86_64 -r yaml2json-Darwin-x86_64
       - name: Upload Release Asset
         uses: actions/upload-release-asset@v1.0.1
         env:
@@ -92,6 +94,8 @@ jobs:
       - uses: actions/download-artifact@v1
         with:
           name: yaml2json-Linux-x86_64
+      - name: Archive asset
+        run: zip yaml2json-Linux-x86_64 -r yaml2json-Linux-x86_64
       - name: Upload Release Asset
         uses: actions/upload-release-asset@v1.0.1
         env:
@@ -105,6 +109,8 @@ jobs:
       - uses: actions/download-artifact@v1
         with:
           name: yaml2json-Linux-armv7l
+      - name: Archive asset
+        run: zip yaml2json-Linux-armv7l -r yaml2json-Linux-armv7l
       - name: Upload Release Asset
         uses: actions/upload-release-asset@v1.0.1
         env:
