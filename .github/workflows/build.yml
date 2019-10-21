@@ -38,10 +38,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
-      - name: Build yaml2json-builder
-        run: docker build -f build/Dockerfile -t yaml2json-builder .
       - name: nimble build
-        run: docker run -v ${GITHUB_WORKSPACE}:${GITHUB_WORKSPACE} -w ${GITHUB_WORKSPACE} yaml2json-builder nimble build -d:release --os:linux --cpu:arm -y
+        uses: docker://nonylene/nim-crosscompile
+        with:
+          entrypoint: /bin/nimble
+          args: build -d:release --os:linux --cpu:arm -y
       - name: Upload artifact
         uses: actions/upload-artifact@v1
         with:
