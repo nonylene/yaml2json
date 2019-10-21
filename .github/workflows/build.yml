@@ -15,13 +15,13 @@ jobs:
       run: nimble build -d:release --os:MacOSX --cpu:amd64 -y
     - name: Create archive directory
       run: |
-        mkdir yaml2json
-        cp yaml2json README.md NOTICE yaml2json/
+        mkdir build/yaml2json -p
+        cp yaml2json README.md NOTICE build/yaml2json/
     - name: Upload artifact # https://help.github.com/en/articles/persisting-workflow-data-using-artifacts
       uses: actions/upload-artifact@v1
       with:
         name: yaml2json-Darwin-x86_64
-        path: yaml2json
+        path: build/yaml2json
 
   build-linux-amd64:
     runs-on: ubuntu-latest
