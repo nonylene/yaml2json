@@ -16,7 +16,7 @@ jobs:
     - name: Create archive directory
       run: |
         mkdir out
-        cp yaml2json README.md NOTICE out/
+        cp yaml2json README.md LICENSE NOTICE out/
     - name: Upload artifact # https://help.github.com/en/articles/persisting-workflow-data-using-artifacts
       uses: actions/upload-artifact@v1
       with:
@@ -35,7 +35,7 @@ jobs:
       - name: Create archive directory
         run: |
           mkdir out
-          cp yaml2json README.md NOTICE out/
+          cp yaml2json README.md LICENSE NOTICE out/
       - name: Upload artifact
         uses: actions/upload-artifact@v1
         with:
@@ -54,7 +54,7 @@ jobs:
       - name: Create archive directory
         run: |
           mkdir out
-          cp yaml2json README.md NOTICE out/
+          cp yaml2json README.md LICENSE NOTICE out/
       - name: Upload artifact
         uses: actions/upload-artifact@v1
         with:
