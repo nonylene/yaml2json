@@ -5,7 +5,7 @@
 ## Usage
 
 ```console
-$ yaml2json [filename or - (stdin)]
+$ yaml2json [-h, -v] [filename or - (stdin)]
 ```
 
 ## Install
