@@ -24,3 +24,7 @@ $ mv yaml2json-`uname -o`-`uname -m`/yaml2json {bin dir}
 ```console
 $ nimble build
 ```
+
+## License and Notices
+
+See [LICENSE](./LICENSE) and [NOTICE](./NOTICE)
